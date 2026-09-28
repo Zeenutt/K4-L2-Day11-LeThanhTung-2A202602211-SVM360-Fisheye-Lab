@@ -1,0 +1,11 @@
+# Exit ticket
+
+Đọc `docs/10-svm360-reading-vi.md` trước khi trả lời câu 1–2. Các câu về zone, `why`, rework, parking và sampling
+đã nằm trong file tương ứng nên không hỏi lại ở đây.
+
+1. Một vật ở vùng seam giữa hai camera thật xuất hiện với hai box khác nhau: đó là lỗi `DUPLICATE` hay cần một quy
+   tắc riêng? Vì sao? Đó **không** tự động là `DUPLICATE`. `DUPLICATE` trong lab một camera là hai box cùng vật trên **cùng một** ảnh. Ở seam SVM, cùng người/xe có thể hiện trên `front` (thường mép/`edge`) và `right` (hình học khác, zone khác) cùng lúc — hai phép chiếu hợp lệ. Xóa một box vì “trùng” sẽ mất bằng chứng phía camera kia. Cần **policy riêng**: giữ cả hai trên fisheye gốc, hoặc gộp chỉ trên BEV/output đã chọn, và chỉ sau timestamp + extrinsics. Thiếu policy thì E5/escalate, không đoán. Ca minh họa: người góc trước-phải — xem `46_gold_set_plan.md`.
+2. Một vật đi qua nhiều frame trên cùng camera: khi nào giữ cùng track ID, khi nào thêm keyframe hoặc trạng thái
+   Outside? Nêu bằng chứng sẽ cần trước khi nối track qua hai camera. Cùng camera: giữ ID khi còn nhận ra cùng vật trong FOV; thêm keyframe khi hình học đổi mạnh (quay lưng, bị che rồi lộ, vào rìa fisheye); `Outside` khi ra khỏi vòng kính/khung và không còn phần in-scope. **Không** nối ID giữa `front` và `right` chỉ vì hai box gần nhau trên BEV. Trước khi nối cross-camera cần: timestamp khớp, calib K/D + T_cam_ego (hoặc T_front_right), policy output (hai box gốc / một box BEV), và adjudicator ghi quyết định. Lab ADASIND không có track bốn camera nên đây là điều kiện, không phải số đo đã có.
+3. Nhìn lại cả buổi: một chỗ bạn tin nhãn mình đúng nhưng reference hoặc người soát nghĩ khác (dẫn frame/`object_ref`),
+   bạn đã xử lý thế nào, và nếu làm lại slice này bạn sẽ đổi gì trong cách làm? `adasind_060000.jpg` R7+M6 và R9, `adasind_102750.jpg` R5+M8: compare/`local_quality` gọi `MISSING` (FN Pedestrian/TW/Truck) nhưng trên ảnh tôi không đọc được vật/class nên **không copy R**, P5 để missing center 3→3 và giải thích bằng R01/R04 chứ không sửa số. L1 `102750` tôi giữ ThreeWheeler (E5) dù R không có. Nếu làm lại B2-mid: vẽ `ego_body` ôm tay/ghi-đông **trước** khi box class động (tránh L6 IGNORE_SCOPE), soát hai `lens_border` đúng vành không gán nhầm `ego_body`, và ghi `unreadable` thay vì để R biến thành rework P1.
