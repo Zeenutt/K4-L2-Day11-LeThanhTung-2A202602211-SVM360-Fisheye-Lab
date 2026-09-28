@@ -1,9 +1,9 @@
 camera_id,slice_type,frames,risk,rationale
-front,normal,,TODO,TODO
-front,hard,,TODO,TODO
-rear,normal,,TODO,TODO
-rear,hard,,TODO,TODO
-left,normal,,TODO,TODO
-left,hard,,TODO,TODO
-right,normal,,TODO,TODO
-right,hard,,TODO,TODO
+front,normal,20,medium,"Mẫu nền ban ngày mật độ vừa trên camera trước. Giữ 20/55 để so với hard; không lấy chuỗi frame liền nhau. Pool giả lập 9700; 20 frame chỉ để thấy ca điển hình không ước lượng tỷ lệ lỗi. ADASIND một camera không thay front SVM."
+front,hard,32,high,"Ưu tiên glare/đèn pha người-xe sát rìa fisheye vạch ô đỗ vs vạch làn phía mũi xe và vật ở seam front-left/front-right. Hard chỉ 2800/12500 trong pool nhưng lấy 32 vì vòng này để tìm loại lỗi cần soi chứ không phải mẫu tỷ lệ."
+rear,normal,18,medium,"Cảnh lùi/đỗ bình thường bumper ego thấy rõ. Mẫu nền riêng cho rear: lab ADASIND không có camera sau. Không dùng zone center/mid/edge của một camera làm camera_id."
+rear,hard,32,high,"Người/vật tiến từ phía sau khi lùi vạch ô đỗ phía đuôi xe đèn lùi đêm vật cắt vành kính và seam rear-left/rear-right. Box tight trên fisheye gốc khác tight sau khi warp BEV nên hard rear cần review trên ảnh gốc."
+left,normal,18,medium,"Cảnh hông trái thông thường (xe song song lề đường). Bắt buộc có mẫu left riêng; không suy từ slice ADASIND. Tránh lấy nhiều frame sát nhau rồi gọi là nhiều ca độc lập."
+left,hard,32,high,"Xe đạp điểm mù ego_body gương/cột A trái tường sát khi đỗ và seam front-left/rear-left. Hai box trên hai camera ở seam chưa chắc DUPLICATE; cần timestamp calibration và policy trước khi gộp."
+right,normal,18,medium,"Cảnh hông phải thông thường. Quan sát ADASIND (camera lệch phải ego_body dưới-trái) chỉ gợi ý kiểu lỗi ego chứ không lấy 3 frame lab làm mẫu right SVM. Pool giả lập 10000; 18 frame là nền không phải gold."
+right,hard,30,high,"Ego_body gương phải vật sát hông vạch ô đỗ bên phải seam front-right/rear-right và méo rìa fisheye. Oversample hard (30/48 của right) để soi ca SVM; đây là ngân sách tìm lỗi trên tình huống 50000 frame giả lập không phải thống kê ADASIND."

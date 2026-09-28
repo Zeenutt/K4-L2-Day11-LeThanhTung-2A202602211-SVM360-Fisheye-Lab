@@ -1,0 +1,15 @@
+{
+  "members": [
+    "honganh",
+    "khang",
+    "tung"
+  ],
+  "assignments": {
+    "honganh": "B2-dense",
+    "khang": "B3-dense",
+    "tung": "B2-mid"
+  },
+  "self": "tung",
+  "slice": "B2-mid",
+  "degrade": []
+}

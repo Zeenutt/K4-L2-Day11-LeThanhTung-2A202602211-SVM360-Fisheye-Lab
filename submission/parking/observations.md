@@ -1,6 +1,6 @@
 # Quan sát vạch ô đỗ
 
-- Hai vạch `parking_line` đã vẽ (mô tả vị trí trong ảnh): TODO
-- Một vạch/dấu sơn hoặc biên **không** vẽ, và vì sao: TODO
-- Polygon `free_space` dừng ở đâu; có phần bị che nào không: TODO
-- Ca chưa chắc cần hỏi người soát (nếu không có, ghi “không có”): TODO
+- Hai vạch `parking_line` đã vẽ (mô tả vị trí trong ảnh): (1) Vạch trắng hàng tiền cảnh lệch trái — polyline từ khoảng (407, 652) xuống mép đáy khung (530, 720); đây là đoạn sơn nhìn rõ, ngăn hai ô đỗ cạnh nhau ở hàng gần camera. (2) Vạch trắng hàng tiền cảnh bên phải — polyline từ (698, 623) sang mép phải ảnh (960, 684); cùng một hàng ô, phần sơn bị cắt bởi biên khung nên đường dừng ở mép phải, không nối bịa. Export còn thêm các polyline khác cho từng đoạn sơn chia ô còn thấy ở hàng giữa; hai vạch trên là hai ranh ô riêng rõ nhất theo GUIDE (ít nhất hai vạch phân chia hai ô).
+- Một vạch/dấu sơn hoặc biên **không** vẽ, và vì sao: Không gán `parking_line` cho hàng rào gỗ chạy ngang cuối bãi (sau xe đỏ). Đó là biên vật lý của bãi, không phải đoạn sơn tạo ranh giới một ô đỗ. Cũng không biến mép lối xe chạy (dải mặt đường trống giữa hai hàng ô) thành `parking_line` — theo GUIDE/docs/11 đó là vai trò của `free_space`, không phải vạch chia ô. Ảnh đối chiếu `parking-lot-contrast.png` dùng để nhớ phân biệt này; ảnh đó không nằm trong task export.
+- Polygon `free_space` dừng ở đâu; có phần bị che nào không: Polygon trải ngang suốt chiều rộng ảnh, nằm đúng dải lối xe chạy trống giữa hàng ô tiền cảnh (gần đáy) và hàng ô giữa bãi. Cạnh dưới khoảng y=681 (trái) → y=591 (phải); cạnh trên khoảng y=576 (trái) → y=526 (phải). Lối này trống hoàn toàn trên ảnh tĩnh, không bị xe/cây/curb che. Polygon dừng sát mép hai hàng ô, không xuyên vào trong ô đỗ, không phủ hàng rào, xe đỏ hay cây phía xa.
+- Ca chưa chắc cần hỏi người soát (nếu không có, ghi “không có”): Các vạch sơn rất mòn sát hàng rào, quanh xe đỏ phía xa — gần như không còn thấy phần sơn nên không vẽ (không nối qua chỗ không thấy). Nếu người soát muốn coi các vết mòn đó vẫn là ranh ô thì cần xem lại trên ảnh; hiện để ngoài nhãn.
